@@ -9,7 +9,6 @@ import {
   Check,
   ShieldCheck,
   Code2,
-  Table as TableIcon,
   Search,
 } from "lucide-react";
 
@@ -70,185 +69,225 @@ ${image ? `<meta name="twitter:image" content="${image}">` : ""}`;
     return true;
   });
 
-  const ratingClass =
+  const ratingBadgeColor =
     score >= 85
-      ? "excellent"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800"
       : score >= 70
-      ? "good"
+      ? "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950/40 dark:text-sky-400 dark:border-sky-800"
       : score >= 50
-      ? "fair"
-      : "poor";
+      ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800"
+      : "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/40 dark:text-red-400 dark:border-red-800";
 
   return (
-    <section className="inspector-section">
-      <div className="preview-header-bar">
-        <div className="preview-title-group">
-          <h2>
-            <ShieldCheck size={22} color="#10b981" />
-            Meta Tags Health & Inspector
+    <section id="tag-inspector" className="w-full my-10 sm:my-12">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
+            <ShieldCheck size={16} />
+            <span>METADATA HEALTH CHECK</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+            Tag Health & Inspector
           </h2>
-          <p>Transparent evaluation of your page metadata and social tags</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Transparent analysis of Open Graph, Twitter Cards, and SEO meta tags
+          </p>
         </div>
       </div>
 
-      <div className="inspector-grid">
-        {/* SCORE & CHECKLIST COLUMN */}
-        <div className="score-card">
-          <div className="score-display-center">
-            <div className={`score-circle ${ratingClass}`}>
-              <span className="score-number">{score}</span>
-              <span className="score-max">/ {maxScore}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* LEFT COLUMN: SCORE & DIAGNOSTICS CHECKLIST (4 cols) */}
+        <div className="lg:col-span-4 bg-white dark:bg-[#0c0c0e] border border-gray-200 dark:border-neutral-800/80 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5">
+          {/* Circular Score Badge */}
+          <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-[#141416] rounded-xl border border-gray-100 dark:border-neutral-800/80">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-neutral-500">
+                SEO & Social Score
+              </p>
+              <div className="flex items-baseline gap-1 mt-1">
+                <span className="text-3xl font-extrabold text-gray-900 dark:text-white">
+                  {score}
+                </span>
+                <span className="text-xs text-slate-400 dark:text-neutral-500">/ {maxScore}</span>
+              </div>
             </div>
-            <span className={`score-rating-badge rating-${ratingClass}`}>
-              {rating} Health
+            <span
+              className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${ratingBadgeColor}`}
+            >
+              {rating}
             </span>
           </div>
 
-          <div className="diagnostics-list">
+          {/* Diagnostic Checks List */}
+          <div className="space-y-3">
             {checks.map((check) => {
               const isPassed = check.passed;
-              const isWarning = check.status === "warning" || check.status === "too_short" || check.status === "too_long";
+              const isWarning =
+                check.status === "warning" ||
+                check.status === "too_short" ||
+                check.status === "too_long";
               const isMissing = check.status === "missing";
 
-              let icon = <CheckCircle2 size={18} color="#10b981" />;
-              if (isWarning) icon = <AlertTriangle size={18} color="#eab308" />;
-              if (isMissing) icon = <XCircle size={18} color="#ef4444" />;
+              let icon = <CheckCircle2 size={16} className="text-emerald-500 flex-shrink-0" />;
+              if (isWarning)
+                icon = <AlertTriangle size={16} className="text-amber-500 flex-shrink-0" />;
+              if (isMissing)
+                icon = <XCircle size={16} className="text-rose-500 flex-shrink-0" />;
 
               return (
-                <div key={check.id} className="diag-item">
-                  <div className="diag-status-icon">{icon}</div>
-                  <div className="diag-body">
-                    <div className="diag-title-row">
-                      <span className="diag-title">{check.title}</span>
-                      <span className="diag-pts">
-                        {isPassed ? `+${check.points} pts` : `0 / ${check.points}`}
+                <div
+                  key={check.id}
+                  className="p-3 bg-slate-50/70 dark:bg-[#141416]/50 rounded-xl border border-gray-100 dark:border-neutral-800/80"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      {icon}
+                      <span className="text-xs font-bold text-gray-900 dark:text-white">
+                        {check.title}
                       </span>
                     </div>
-                    <div className="diag-msg">{check.message}</div>
+                    <span className="text-[11px] font-semibold text-slate-400 dark:text-neutral-500">
+                      {isPassed ? `+${check.points} pts` : `0 / ${check.points}`}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-neutral-400 pl-6 leading-relaxed">
+                    {check.message}
+                  </p>
 
-                    {check.length !== undefined && (
-                      <div className="length-bar">
+                  {check.length !== undefined && (
+                    <div className="pl-6 mt-2">
+                      <div className="w-full h-1.5 bg-slate-200 dark:bg-neutral-800 rounded-full overflow-hidden">
                         <div
-                          className="length-bar-fill"
+                          className={`h-full rounded-full transition-all ${
+                            check.status === "optimal"
+                              ? "bg-emerald-500"
+                              : check.status === "too_long"
+                              ? "bg-rose-500"
+                              : "bg-amber-500"
+                          }`}
                           style={{
-                            width: `${Math.min(100, (check.length / (check.id === "og_title" ? 60 : 160)) * 100)}%`,
-                            backgroundColor:
-                              check.status === "optimal"
-                                ? "#10b981"
-                                : check.status === "too_long"
-                                ? "#ef4444"
-                                : "#eab308",
+                            width: `${Math.min(
+                              100,
+                              (check.length / (check.id === "og_title" ? 60 : 160)) * 100
+                            )}%`,
                           }}
                         />
                       </div>
-                    )}
-                  </div>
+                      <div className="flex justify-between text-[10px] text-slate-400 dark:text-neutral-500 mt-1">
+                        <span>{check.length} characters</span>
+                        <span>{check.optimal}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* RAW TAGS & SNIPPET COLUMN */}
-        <div className="tags-card">
-          <div className="tags-card-header">
-            <div className="tag-subtabs">
+        {/* RIGHT COLUMN: RAW TAGS TABLE & CODE GENERATOR (8 cols) */}
+        <div className="lg:col-span-8 bg-white dark:bg-[#0c0c0e] border border-gray-200 dark:border-neutral-800/80 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col">
+          {/* Subtabs and Filter Input */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-neutral-900 rounded-xl overflow-x-auto">
               <button
                 type="button"
-                className={`subtab-btn ${activeTab === "all" ? "active" : ""}`}
                 onClick={() => setActiveTab("all")}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  activeTab === "all"
+                    ? "bg-white dark:bg-black text-gray-900 dark:text-white shadow-sm"
+                    : "text-slate-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
               >
                 All ({allTags.length})
               </button>
               <button
                 type="button"
-                className={`subtab-btn ${activeTab === "og" ? "active" : ""}`}
                 onClick={() => setActiveTab("og")}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  activeTab === "og"
+                    ? "bg-white dark:bg-black text-gray-900 dark:text-white shadow-sm"
+                    : "text-slate-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
               >
                 Open Graph
               </button>
               <button
                 type="button"
-                className={`subtab-btn ${activeTab === "twitter" ? "active" : ""}`}
                 onClick={() => setActiveTab("twitter")}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  activeTab === "twitter"
+                    ? "bg-white dark:bg-black text-gray-900 dark:text-white shadow-sm"
+                    : "text-slate-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
               >
                 Twitter
               </button>
               <button
                 type="button"
-                className={`subtab-btn ${activeTab === "meta" ? "active" : ""}`}
                 onClick={() => setActiveTab("meta")}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  activeTab === "meta"
+                    ? "bg-white dark:bg-black text-gray-900 dark:text-white shadow-sm"
+                    : "text-slate-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
               >
                 Standard
               </button>
               <button
                 type="button"
-                className={`subtab-btn ${activeTab === "snippet" ? "active" : ""}`}
                 onClick={() => setActiveTab("snippet")}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all inline-flex items-center gap-1 ${
+                  activeTab === "snippet"
+                    ? "bg-emerald-500 text-white shadow-sm"
+                    : "text-slate-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
               >
-                <Code2 size={13} style={{ display: "inline", verticalAlign: "middle", marginRight: "4px" }} />
-                Code Snippet
+                <Code2 size={13} />
+                <span>HTML Code</span>
               </button>
             </div>
 
             {activeTab !== "snippet" && (
-              <div style={{ position: "relative", width: "200px" }}>
+              <div className="relative w-full sm:w-56">
+                <Search
+                  size={14}
+                  className="absolute left-3 top-2.5 text-slate-400 dark:text-neutral-500 pointer-events-none"
+                />
                 <input
                   type="text"
                   placeholder="Filter tags..."
                   value={searchFilter}
                   onChange={(e) => setSearchFilter(e.target.value)}
-                  style={{
-                    width: "100%",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid var(--border-subtle)",
-                    borderRadius: "6px",
-                    padding: "6px 10px 6px 28px",
-                    color: "white",
-                    fontSize: "0.8rem",
-                    outline: "none",
-                  }}
-                />
-                <Search
-                  size={14}
-                  style={{
-                    position: "absolute",
-                    left: "8px",
-                    top: "8px",
-                    color: "var(--text-dim)",
-                  }}
+                  className="w-full pl-8 pr-3 py-1.5 text-xs text-gray-900 dark:text-white bg-slate-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg outline-none focus:border-emerald-500"
                 />
               </div>
             )}
           </div>
 
+          {/* Tab Content: Snippet or Raw Table */}
           {activeTab === "snippet" ? (
-            <div className="code-generator-box">
-              <div className="code-header-bar">
-                <span className="code-title">Recommended HTML Meta Tags</span>
+            <div className="flex-1 bg-black text-neutral-100 rounded-xl p-4 sm:p-5 font-mono text-xs overflow-hidden flex flex-col border border-neutral-800">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-800 mb-3">
+                <span className="text-neutral-400 font-sans text-xs font-semibold">
+                  Recommended HTML Meta Tags
+                </span>
                 <button
                   type="button"
-                  className="copy-mini-btn"
                   onClick={handleCopySnippet}
-                  style={{
-                    background: snippetCopied ? "rgba(16, 185, 129, 0.2)" : "rgba(255, 255, 255, 0.08)",
-                    color: snippetCopied ? "#34d399" : "inherit",
-                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans font-semibold transition-all ${
+                    snippetCopied
+                      ? "bg-emerald-600 text-white"
+                      : "bg-neutral-900 hover:bg-neutral-800 text-neutral-200 border border-neutral-800"
+                  }`}
                 >
-                  {snippetCopied ? (
-                    <>
-                      <Check size={14} />
-                      <span>Copied Snippet!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={14} />
-                      <span>Copy HTML</span>
-                    </>
-                  )}
+                  {snippetCopied ? <Check size={13} /> : <Copy size={13} />}
+                  <span>{snippetCopied ? "Copied!" : "Copy HTML"}</span>
                 </button>
               </div>
-              <pre className="code-content">
+
+              <pre className="overflow-x-auto text-emerald-400 leading-relaxed font-mono select-all">
 {`<!-- Primary Meta Tags -->
 <title>${title || ""}</title>
 <meta name="title" content="${title || ""}">
@@ -268,19 +307,22 @@ ${image ? `<meta name="twitter:image" content="${image}">` : ""}`}
               </pre>
             </div>
           ) : (
-            <div className="table-wrapper">
-              <table className="meta-table">
-                <thead>
+            <div className="flex-1 overflow-x-auto border border-gray-200 dark:border-neutral-800/80 rounded-xl max-h-[460px] overflow-y-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="sticky top-0 bg-slate-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 text-slate-500 dark:text-neutral-400 z-10">
                   <tr>
-                    <th>Tag / Property</th>
-                    <th>Extracted Content</th>
-                    <th style={{ textAlign: "right" }}>Action</th>
+                    <th className="py-2.5 px-3.5 font-semibold">Property / Tag</th>
+                    <th className="py-2.5 px-3.5 font-semibold">Extracted Content</th>
+                    <th className="py-2.5 px-3.5 font-semibold text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-100 dark:divide-neutral-800/80">
                   {filteredTags.length === 0 ? (
                     <tr>
-                      <td colSpan={3} style={{ textAlign: "center", padding: "32px", color: "var(--text-dim)" }}>
+                      <td
+                        colSpan={3}
+                        className="py-10 text-center text-slate-400 dark:text-neutral-500"
+                      >
                         No matching meta tags detected.
                       </td>
                     </tr>
@@ -290,17 +332,23 @@ ${image ? `<meta name="twitter:image" content="${image}">` : ""}`}
                       const isCopied = copiedKey === itemKey;
 
                       return (
-                        <tr key={itemKey}>
-                          <td className="tag-key">{tag.key}</td>
-                          <td className="tag-val">{tag.content}</td>
-                          <td className="tag-copy-cell">
+                        <tr
+                          key={itemKey}
+                          className="hover:bg-slate-50/60 dark:hover:bg-neutral-900/40 transition-colors"
+                        >
+                          <td className="py-2.5 px-3.5 font-mono font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                            {tag.key}
+                          </td>
+                          <td className="py-2.5 px-3.5 font-mono text-slate-700 dark:text-neutral-300 max-w-sm sm:max-w-md break-all">
+                            {tag.content}
+                          </td>
+                          <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
                             <button
                               type="button"
-                              className="copy-mini-btn"
                               onClick={() => handleCopy(tag.content, itemKey)}
-                              title="Copy value"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-slate-600 dark:text-neutral-300 bg-slate-100 dark:bg-neutral-900 hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-neutral-800 dark:hover:text-emerald-400 rounded-md border border-slate-200 dark:border-neutral-800 transition-colors"
                             >
-                              {isCopied ? <Check size={12} color="#10b981" /> : <Copy size={12} />}
+                              {isCopied ? <Check size={11} className="text-emerald-500" /> : <Copy size={11} />}
                               <span>{isCopied ? "Copied" : "Copy"}</span>
                             </button>
                           </td>
