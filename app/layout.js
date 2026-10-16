@@ -13,25 +13,68 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   metadataBase: new URL("https://oglinkpreview.vercel.app"),
-  title: "LinkPreview — Free Social Preview & Open Graph Inspector",
+  title: {
+    default: "LinkPreview — Free Social Preview & Open Graph Inspector",
+    template: "%s | LinkPreview",
+  },
   description:
-    "Preview how your links appear on Facebook, X (Twitter), LinkedIn, Slack, Google Search, and mobile messaging. Inspect Open Graph and meta tags instantly.",
+    "Free real-time Open Graph simulator and meta tag inspector. Preview how your links appear on Facebook, X (Twitter), LinkedIn, WhatsApp, Slack, iMessage, and Google Search before sharing.",
+  keywords: [
+    "open graph preview",
+    "og preview tool",
+    "link preview generator",
+    "social card tester",
+    "meta tag checker",
+    "twitter card validator",
+    "facebook share debugger",
+    "whatsapp link preview",
+    "slack unfurl simulator",
+    "free open graph inspector",
+    "seo link debugger",
+  ],
+  authors: [
+    {
+      name: "LinkPreview Community",
+      url: "https://github.com/Yaseen549/link-preview",
+    },
+  ],
+  creator: "LinkPreview",
+  publisher: "LinkPreview",
+  applicationName: "LinkPreview",
+  alternates: {
+    canonical: "https://oglinkpreview.vercel.app",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.png", sizes: "192x192", type: "image/png" },
       { url: "/logo.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/logo.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: ["/icon.png"],
+    shortcut: ["/favicon.ico"],
   },
   openGraph: {
     title: "LinkPreview — Free Social Preview & Open Graph Inspector",
     description:
-      "Preview how your links appear on Facebook, X (Twitter), LinkedIn, Slack, Google Search, and mobile messaging.",
+      "Preview how your links appear on Facebook, X (Twitter), LinkedIn, WhatsApp, Slack, and Google Search. Inspect Open Graph and meta tags instantly.",
     url: "https://oglinkpreview.vercel.app",
     siteName: "LinkPreview",
+    locale: "en_US",
+    type: "website",
     images: [
       {
         url: "/logo.png",
@@ -40,14 +83,34 @@ export const metadata = {
         alt: "LinkPreview Logo",
       },
     ],
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "LinkPreview — Free Social Preview & Open Graph Inspector",
     description:
-      "Preview how your links appear on Facebook, X (Twitter), LinkedIn, Slack, Google Search, and mobile messaging.",
+      "Preview how your links appear on Facebook, X (Twitter), LinkedIn, WhatsApp, Slack, and Google Search. Inspect Open Graph and meta tags instantly.",
     images: ["/logo.png"],
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LinkPreview",
+  "url": "https://oglinkpreview.vercel.app",
+  "description":
+    "Free real-time Open Graph simulator and meta tag inspector. Preview links on Facebook, X (Twitter), LinkedIn, WhatsApp, Slack, iMessage, and Google Search.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "LinkPreview",
+    "url": "https://github.com/Yaseen549/link-preview",
   },
 };
 
@@ -58,6 +121,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="bg-white dark:bg-black text-gray-900 dark:text-neutral-100 antialiased">
         {children}
       </body>

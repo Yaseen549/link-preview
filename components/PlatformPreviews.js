@@ -13,12 +13,13 @@ import {
 } from "@/components/SocialIcons";
 
 function ImageWithFallback({ src, alt, className }) {
+  const [prevSrc, setPrevSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
 
-  // Reset error state whenever the image source changes
-  useEffect(() => {
+  if (src !== prevSrc) {
+    setPrevSrc(src);
     setHasError(false);
-  }, [src]);
+  }
 
   if (!src || hasError) {
     return (

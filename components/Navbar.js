@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link2, Sun, Moon, ExternalLink, Menu, X, ArrowRight, History } from "lucide-react";
+import Link from "next/link";
+import { Sun, Moon, ExternalLink, Menu, X, ArrowRight, History } from "lucide-react";
+import { GithubIcon } from "./SocialIcons";
 
 export default function Navbar({ onCheckPreviewClick }) {
   const [theme, setTheme] = useState("light");
@@ -10,6 +12,7 @@ export default function Navbar({ onCheckPreviewClick }) {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
     if (savedTheme === "dark") {
@@ -54,14 +57,14 @@ export default function Navbar({ onCheckPreviewClick }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Brand Logo & Pro Free Badge */}
           <div className="flex items-center gap-3">
-            <a href="/" className="flex items-center gap-2.5 group">
+            <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-black text-base tracking-tighter leading-none shadow-sm shadow-emerald-500/25 group-hover:bg-emerald-600 group-hover:scale-105 transition-all duration-200">
                 LP
               </div>
               <span className="font-bold text-lg text-gray-900 dark:text-white tracking-tight">
                 LinkPreview
               </span>
-            </a>
+            </Link>
             <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/60">
               PRO FREE
             </span>
@@ -102,6 +105,18 @@ export default function Navbar({ onCheckPreviewClick }) {
             >
               {theme === "light" ? <Moon size={16} /> : <Sun size={16} className="text-amber-400" />}
             </button>
+
+            {/* GitHub Repository Link */}
+            <a
+              href="https://github.com/Yaseen549/link-preview"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub Repository"
+              className="h-9 px-3 inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 dark:border-neutral-800 text-xs font-semibold text-slate-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-900 hover:text-black dark:hover:text-white transition-colors"
+            >
+              <GithubIcon size={16} />
+              <span className="hidden sm:inline">GitHub</span>
+            </a>
 
             {/* OG Protocol Link: Exactly h-9 matching the buttons */}
             <a
@@ -174,6 +189,18 @@ export default function Navbar({ onCheckPreviewClick }) {
               className="flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-900"
             >
               <span>OG Protocol Docs</span>
+              <ExternalLink size={14} />
+            </a>
+            <a
+              href="https://github.com/Yaseen549/link-preview"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-900"
+            >
+              <span className="flex items-center gap-2">
+                <GithubIcon size={16} />
+                <span>GitHub Repository</span>
+              </span>
               <ExternalLink size={14} />
             </a>
           </div>

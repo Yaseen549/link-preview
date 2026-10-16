@@ -12,14 +12,14 @@ const EXAMPLE_URLS = [
 ];
 
 export default function SearchBar({ onSearch, isLoading, currentUrl }) {
+  const [prevUrl, setPrevUrl] = useState(currentUrl);
   const [inputVal, setInputVal] = useState(currentUrl || "https://github.com");
 
   // Keep input synchronized if parent URL changes
-  useEffect(() => {
-    if (currentUrl) {
-      setInputVal(currentUrl);
-    }
-  }, [currentUrl]);
+  if (currentUrl !== prevUrl) {
+    setPrevUrl(currentUrl);
+    setInputVal(currentUrl || "");
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

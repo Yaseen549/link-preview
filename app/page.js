@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import HeroIllustration from "@/components/HeroIllustration";
 import SearchBar from "@/components/SearchBar";
@@ -8,6 +8,7 @@ import SupportedPlatforms from "@/components/SupportedPlatforms";
 import PlatformPreviews from "@/components/PlatformPreviews";
 import TagInspector from "@/components/TagInspector";
 import { Zap, Link2, ShieldCheck, AlertCircle } from "lucide-react";
+import { GithubIcon } from "@/components/SocialIcons";
 
 export default function Home() {
   const [url, setUrl] = useState("https://github.com");
@@ -15,12 +16,7 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [previewData, setPreviewData] = useState(null);
 
-  // Fetch initial preview for the default open-source URL on mount
-  useEffect(() => {
-    fetchPreview("https://github.com");
-  }, []);
-
-  const fetchPreview = async (targetUrl) => {
+  const fetchPreview = useCallback(async (targetUrl) => {
     if (!targetUrl) return;
     setUrl(targetUrl);
     setLoading(true);
@@ -40,7 +36,13 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Fetch initial preview for the default open-source URL on mount
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchPreview("https://github.com");
+  }, [fetchPreview]);
 
   const handleScrollToChecker = () => {
     const el = document.getElementById("url-checker");
@@ -61,9 +63,20 @@ export default function Home() {
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center mb-6 lg:mb-8">
           {/* Left Column: Heading, Description, Feature Highlights */}
           <div className="lg:col-span-7 flex flex-col items-start text-left">
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/60 mb-4">
-              REAL-TIME LINK PREVIEW TOOL
+            {/* Eyebrow badge & GitHub repo link */}
+            <div className="flex flex-wrap items-center gap-2.5 mb-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/60">
+                REAL-TIME LINK PREVIEW TOOL
+              </div>
+              <a
+                href="https://github.com/Yaseen549/link-preview"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-700 dark:text-neutral-300 bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group"
+              >
+                <GithubIcon size={13} />
+                <span>Open Source on GitHub</span>
+              </a>
             </div>
 
             {/* Main Headline */}
@@ -173,9 +186,18 @@ export default function Home() {
             <div className="w-5 h-5 rounded bg-emerald-500 flex items-center justify-center text-white font-black text-[11px] leading-none shadow-xs">
               LP
             </div>
-            <p>© 2026 LinkPreview. Built with Next.js & Tailwind CSS.</p>
+            <p>© 2026 LinkPreview. Open source under MIT License.</p>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6">
+            <a
+              href="https://github.com/Yaseen549/link-preview"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-medium text-slate-700 dark:text-neutral-300 hover:text-emerald-500 transition-colors"
+            >
+              <GithubIcon size={14} />
+              <span>GitHub Repository</span>
+            </a>
             <a href="https://ogp.me/" target="_blank" rel="noreferrer" className="hover:text-emerald-500 transition-colors">
               Open Graph Protocol
             </a>

@@ -57,8 +57,8 @@ Ensure you have [Node.js](https://nodejs.org) (v18.18.0 or later) installed on y
 
 ### 2. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/linkpreviewer.git
-cd linkpreviewer
+git clone https://github.com/Yaseen549/link-preview.git
+cd link-preview
 ```
 
 ### 3. Install Dependencies
