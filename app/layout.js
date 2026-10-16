@@ -77,10 +77,10 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/logo.png",
-        width: 512,
-        height: 512,
-        alt: "LinkPreview Logo",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "LinkPreview — Free Social Preview & Open Graph Inspector",
       },
     ],
   },
@@ -89,7 +89,14 @@ export const metadata = {
     title: "LinkPreview — Free Social Preview & Open Graph Inspector",
     description:
       "Preview how your links appear on Facebook, X (Twitter), LinkedIn, WhatsApp, Slack, and Google Search. Inspect Open Graph and meta tags instantly.",
-    images: ["/logo.png"],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "LinkPreview — Free Social Preview & Open Graph Inspector",
+      },
+    ],
   },
 };
 
